@@ -90,6 +90,14 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label>Transport</label>
+                                <select class="form-control select2" style="width: 100%;" name="transport_id" id="transport_id">
+                                    @foreach(App\Transport_type::all() as $transport)
+                                        <option value="{{$transport->id}}">{{$transport->transport_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
@@ -103,60 +111,53 @@
         </div>
     </section>
     <script>
-       /* var defaultColor = "#0000ff";
-        function updateFirst(event) {
-            var colorWell = document.querySelector("#colorWell");
-            if (colorWell) {
-                colorWell.value = event.target.value;
-            }
-        }function updateAll(event) {
-            document.querySelectorAll("colorWell").forEach(function(colorWell) {
-                colorWell.value = event.target.value;
-            });
-        }*/
+        /* var defaultColor = "#0000ff";
+         function updateFirst(event) {
+             var colorWell = document.querySelector("#colorWell");
+             if (colorWell) {
+                 colorWell.value = event.target.value;
+             }
+         }function updateAll(event) {
+             document.querySelectorAll("colorWell").forEach(function(colorWell) {
+                 colorWell.value = event.target.value;
+             });
+         }*/
         var poly;
         var map;
-            function initMap() {
-                map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 7,
-                    center: {lat: 36.8189700, lng: 10.1657900}  // Center the map on Chicago, USA.
-                });
-
-                colorWell = document.querySelector("#colorWell");
-               colorWell.value = defaultColor;
-                colorWell.addEventListener("input", updateFirst, false);
-                colorWell.addEventListener("change", updateAll, false);
-                colorWell.select();
-                poly = new google.maps.Polyline({
-                    strokeColor: colorWell.value,
-                    strokeOpacity: 1.0,
-                    strokeWeight: 3
-                });
-                poly.setMap(map);
-                // Add a listener for the click event
-                map.addListener('click', addLatLng);
-            }
-
-var chaine="";
-            // Handles click events on a map, and adds a new point to the Polyline.
-            function addLatLng(event) {
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 7,
+                center: {lat: 36.8189700, lng: 10.1657900}  // Center the map on Chicago, USA.
+            });
+            var colorWell = document.querySelector("#colorWell");
+            poly = new google.maps.Polyline({
+                strokeColor: colorWell.value,
+                strokeOpacity: 1.0,
+                strokeWeight: 3 });
+            poly.setMap(map);
+            // Add a listener for the click event
+            map.addListener('click', addLatLng);
+        }
+        var chaine="";
+        // Handles click events on a map, and adds a new point to the Polyline.
+        function addLatLng(event) {
 
 
-                var path = poly.getPath();
-                // Because path is an MVCArray, we can simply append a new coordinate
-                // and it will automatically appear.
-                path.push(event.latLng);
-                var markerLat = (event.latLng.lat()).toFixed(6);
-                var markerLng = (event.latLng.lng()).toFixed(6);
-                if (event)
+            var path = poly.getPath();
+            // Because path is an MVCArray, we can simply append a new coordinate
+            // and it will automatically appear.
+            path.push(event.latLng);
+            var markerLat = (event.latLng.lat()).toFixed(6);
+            var markerLng = (event.latLng.lng()).toFixed(6);
+            if (event)
                 chaine= chaine +markerLat+" , "+markerLng+",";
-                $("#coord").val(chaine);
-                // Add a new marker at the new plotted point on the polyline.
-                var marker = new google.maps.Marker({
-                    position: event.latLng,
-                    title: '#' + path.getLength(),
-                    map: map
-                });
+            $("#coord").val(chaine);
+            // Add a new marker at the new plotted point on the polyline.
+            var marker = new google.maps.Marker({
+                position: event.latLng,
+                title: '#' + path.getLength(),
+                map: map
+            });
 
 
 
